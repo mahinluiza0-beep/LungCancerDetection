@@ -17,11 +17,10 @@ st.markdown("""
         font-family: 'Roboto', sans-serif;
     }
     
-    .main {
-        /* Gradient Background for the main content area */
-        background-image: linear-gradient(to right top, #d1e7e7, #e6f3ff, #e0f2f7, #cceeff); /* Light blue/teal gradient */
+    .stApp {
+        /* Gradient Background for the entire app */
+        background-image: linear-gradient(to right top, #d1e7e7, #e6f3ff, #e0f2f7, #cceeff);
         color: #333333;
-        padding: 20px 50px;
     }
     
     .stButton>button {
@@ -49,7 +48,6 @@ st.markdown("""
         margin-bottom: 20px;
     }
     
-    /* Info and Warning boxes can also get a slightly updated look */
     .st-emotion-cache-1r6ftj { /* This is for st.info */
         background-color: #e0f7fa; /* Lighter blue */
         color: #006064; /* Darker teal */
@@ -75,12 +73,7 @@ st.markdown("""
         text-shadow: 1px 1px 3px rgba(0,0,0,0.15); /* More prominent text shadow */
     }
 
-    /* Hide the default sidebar and its scroller (still applies even if sidebar elements are moved) */
-    .st-emotion-cache-1r6ftj { /* This targets the actual Streamlit sidebar container */
-        display: none;
-    }
-
-    /* Adjust the main content block padding if needed after removing sidebar */
+    /* Target the main content block for padding */
     .block-container {
         padding-top: 1rem;
         padding-bottom: 0rem;
