@@ -18,13 +18,13 @@ st.markdown("""
     }
     
     .stApp {
-        /* Gradient Background for the entire app */
-        background-image: linear-gradient(to right top, #d1e7e7, #e6f3ff, #e0f2f7, #cceeff);
-        color: #333333;
+        /* Modern, neutral gradient background */
+        background-image: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        color: #2c3e50; /* A dark, professional gray */
     }
     
     .stButton>button {
-        background-color: #007ACC;
+        background-color: #27ae60; /* A calming green for action */
         color: white;
         font-size: 16px;
         font-weight: bold;
@@ -32,51 +32,55 @@ st.markdown("""
         padding: 10px 20px;
         transition: all 0.3s ease;
         border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     
     .stButton>button:hover {
-        background-color: #005f99;
+        background-color: #229954;
         transform: scale(1.05);
     }
     
-    /* Container for the Upload section - a slightly different background */
-    .st-emotion-cache-1c7y3q.stContainer {
-        background-color: #f8f9fa; /* A very light gray for separation */
+    /* Container for the Upload section - a soft, warm background */
+    .st-emotion-cache-1c7y3q.stContainer:nth-of-type(1) {
+        background-color: #ffffff; /* White for cleanliness */
         border-radius: 15px;
         padding: 25px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         margin-top: 20px;
         margin-bottom: 20px;
     }
     
     /* Container for the Analysis section - a slightly different background */
     .st-emotion-cache-1c7y3q.stContainer:nth-of-type(2) {
-        background-color: #ffffff; /* Pure white for a clean look */
+        background-color: #f8f9fa; /* A very light gray for separation */
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
     
     .st-emotion-cache-1r6ftj { /* This is for st.info */
-        background-color: #e0f7fa; /* Lighter blue */
-        color: #006064; /* Darker teal */
-        border-left: 5px solid #00BCD4; /* Accent border */
+        background-color: #e8f6f3; /* Light teal for success/info */
+        color: #16a085;
+        border-left: 5px solid #1abc9c;
         border-radius: 8px;
         padding: 10px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     
     .st-emotion-cache-q82v5q { /* This is for st.warning */
-        background-color: #fff8e1; /* Lighter yellow */
-        color: #e65100; /* Darker orange */
-        border-left: 5px solid #FFC107; /* Accent border */
+        background-color: #fef9e7; /* Light yellow for warnings */
+        color: #f39c12;
+        border-left: 5px solid #f1c40f;
         border-radius: 8px;
         padding: 10px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     
     h1 {
-        color: #003366;
+        color: #34495e; /* Dark professional gray */
         text-align: center;
         font-weight: 700;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.15); /* More prominent text shadow */
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
     }
 
     /* Target the main content block for padding */
