@@ -5,7 +5,7 @@ from keras.models import load_model
 import datetime
 import io
 
-# Set page to wide mode
+# Set page to wide mode and hide the default Streamlit sidebar and its scrollbar
 st.set_page_config(layout="wide")
 
 # Custom styles for a modern, attractive look
@@ -17,9 +17,10 @@ st.markdown("""
         font-family: 'Roboto', sans-serif;
     }
     
-    .stApp {
+    .main {
         background-color: #f0f2f6;
         color: #333333;
+        padding: 20px 50px;
     }
     
     .stButton>button {
@@ -38,10 +39,10 @@ st.markdown("""
         transform: scale(1.05);
     }
     
-    .st-emotion-cache-1c7y3q {
+    .custom-container {
         background-color: white;
         border-radius: 15px;
-        padding: 20px;
+        padding: 25px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         margin-top: 20px;
         margin-bottom: 20px;
@@ -67,13 +68,10 @@ st.markdown("""
         font-weight: 700;
         text-shadow: 1px 1px 2px #cccccc;
     }
-    
-    .sidebar .st-emotion-cache-1j43zcr {
-        background-color: #003366;
-    }
-    
-    .sidebar .st-emotion-cache-1j43zcr h2 {
-        color: white;
+
+    /* Hide the default sidebar and its scroller */
+    .st-emotion-cache-1r6ftj {
+        display: none;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -81,6 +79,7 @@ st.markdown("""
 # Load model once
 @st.cache_resource
 def load_lung_model():
+    """Loads the pre-trained Keras model."""
     try:
         model = load_model('lung_model.h5')
         return model
@@ -95,11 +94,18 @@ st.markdown("<h1 style='text-align: center;'>🫁 LungScan AI: Deep Learning-Pow
 st.markdown("<h3 style='text-align: center; color: #555;'>A tool for preliminary screening of lung conditions.</h3>", unsafe_allow_html=True)
 st.markdown("---")
 
-st.sidebar.header("📂 Upload & Patient Information")
-uploaded_file = st.sidebar.file_uploader("Upload Lung CT Scan Image", type=["jpg", "jpeg", "png"])
-user = st.sidebar.text_input("Enter Patient Name", value="Jane Doe")
+# Use a container for the input section to make it look cleaner
+with st.container(border=True):
+    st.header("Upload & Patient Information")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        uploaded_file = st.file_uploader("Upload Lung CT Scan Image", type=["jpg", "jpeg", "png"])
+    
+    with col2:
+        user = st.text_input("Enter Patient Name", value="Jane Doe")
 
-st.info("💡 **Instructions:** Upload a clear Lung CT scan image (JPG, JPEG, or PNG) on the left sidebar. The AI will analyze the image to provide a preliminary result.")
+st.info("💡 **Instructions:** Upload a clear Lung CT scan image (JPG, JPEG, or PNG). The AI will analyze the image to provide a preliminary result.")
 st.warning("⚠️ **Disclaimer:** This tool provides indicative results only. Always consult a qualified medical professional for an accurate diagnosis.")
 
 detection_result = None
@@ -135,31 +141,36 @@ if uploaded_file:
     try:
         image = Image.open(uploaded_file)
         
-        col1, col2 = st.columns([1, 2])
+        st.markdown("---")
         
-        with col1:
-            st.subheader("🖼️ Uploaded CT Scan")
-            st.image(image, caption="CT Scan Image", use_container_width=True)
+        # Container for the results display
+        with st.container(border=True):
+            st.header("Analysis")
+            
+            col1, col2 = st.columns([1, 2])
+            
+            with col1:
+                st.subheader("🖼️ Uploaded CT Scan")
+                st.image(image, caption="CT Scan Image", use_container_width=True)
 
-        with col2:
-            st.subheader("🔬 Analysis Result")
-            if st.button("🚀 Run Analysis"):
-                with st.spinner("Analyzing image... This may take a moment."):
-                    detection_result = test_model_proc(image)
-                    if "Error" in detection_result or "Unknown" in detection_result:
-                        st.error(f"❌ Analysis failed: {detection_result}")
-                    else:
-                        st.success(f"✅ **Analysis Complete!**")
-                        
-                        # Display all information directly
-                        st.markdown("---")
-                        st.subheader("📋 Final Report")
-                        st.markdown(f"**Patient Name:** {user}")
-                        st.markdown(f"**Date of Analysis:** {datetime.datetime.now().strftime('%B %d, %Y')}")
-                        st.markdown(f"**Analysis Result:** **{detection_result}**")
-                        st.markdown("---")
-                        
-                        st.info("Remember to consult a doctor for a professional diagnosis. This report is for informational purposes only.")
-                        
+            with col2:
+                st.subheader("🔬 Analysis Result")
+                if st.button("🚀 Run Analysis"):
+                    with st.spinner("Analyzing image... This may take a moment."):
+                        detection_result = test_model_proc(image)
+                        if "Error" in detection_result or "Unknown" in detection_result:
+                            st.error(f"❌ Analysis failed: {detection_result}")
+                        else:
+                            st.success(f"✅ **Analysis Complete!**")
+                            
+                            st.markdown("---")
+                            st.subheader("📋 Final Report")
+                            st.markdown(f"**Patient Name:** {user}")
+                            st.markdown(f"**Date of Analysis:** {datetime.datetime.now().strftime('%B %d, %Y')}")
+                            st.markdown(f"**Analysis Result:** **{detection_result}**")
+                            st.markdown("---")
+                            
+                            st.info("Remember to consult a doctor for a professional diagnosis. This report is for informational purposes only.")
+                            
     except Exception as e:
         st.error(f"An error occurred while processing the file: {e}")
