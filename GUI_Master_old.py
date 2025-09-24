@@ -2,11 +2,11 @@ import streamlit as st
 import numpy as np
 from PIL import Image
 from keras.models import load_model
-import os
 import datetime
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
+import io
 
 # Load model once
 @st.cache_resource
@@ -52,7 +52,6 @@ if uploaded_file:
     image = Image.open(uploaded_file)
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
-
     if st.button("Run Detection"):
         with st.spinner("Analyzing..."):
             detection_result = test_model_proc(image)
@@ -61,13 +60,10 @@ if uploaded_file:
     # Save the uploaded image for report
     stored_image = image
 
-# Report generation
+# Updated report generation function to use in-memory buffer
 def generate_report(user, detection_result, image):
-    filename = f"lung_report_{user}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-    temp_img_path = "temp_uploaded_image.jpg"
-    image.save(temp_img_path)
-
-    c = canvas.Canvas(filename, pagesize=letter)
+    buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
     c.setStrokeColor(colors.black)
     c.setLineWidth(1.5)
     c.rect(20, 20, letter[0] - 40, letter[1] - 40)
@@ -89,19 +85,26 @@ def generate_report(user, detection_result, image):
     c.setFont("Helvetica", 12)
     c.drawString(250, 660, detection_result)
 
-    c.drawImage(temp_img_path, 50, 420, width=200, height=200)
+    # Save PIL image to bytes and draw it in the PDF
+    img_buffer = io.BytesIO()
+    image.save(img_buffer, format='JPEG')
+    img_buffer.seek(0)
+    c.drawImage(img_buffer, 50, 420, width=200, height=200)
 
     c.drawString(50, 100, "Thank you for using LungScan AI")
     c.drawString(50, 80, "Report generated automatically. Please consult a doctor for confirmation.")
 
     c.save()
-    os.remove(temp_img_path)
-    return filename
+    buffer.seek(0)
+    return buffer
 
 if uploaded_file and detection_result:
     user = st.text_input("Enter Patient Name", value="John Doe")
     if st.button("Generate PDF Report"):
-        pdf_file = generate_report(user, detection_result, stored_image)
-        with open(pdf_file, "rb") as f:
-            st.download_button("Download Report", data=f, file_name=pdf_file, mime="application/pdf")
-
+        pdf_buffer = generate_report(user, detection_result, stored_image)
+        st.download_button(
+            label="Download Report",
+            data=pdf_buffer,
+            file_name=f"lung_report_{user}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+            mime="application/pdf"
+        )
