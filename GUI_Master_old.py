@@ -39,13 +39,19 @@ st.markdown("""
         transform: scale(1.05);
     }
     
-    .custom-container {
-        background-color: white; /* Keep containers white for contrast */
+    /* Container for the Upload section - a slightly different background */
+    .st-emotion-cache-1c7y3q.stContainer {
+        background-color: #f8f9fa; /* A very light gray for separation */
         border-radius: 15px;
         padding: 25px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         margin-top: 20px;
         margin-bottom: 20px;
+    }
+    
+    /* Container for the Analysis section - a slightly different background */
+    .st-emotion-cache-1c7y3q.stContainer:nth-of-type(2) {
+        background-color: #ffffff; /* Pure white for a clean look */
     }
     
     .st-emotion-cache-1r6ftj { /* This is for st.info */
@@ -79,6 +85,11 @@ st.markdown("""
         padding-bottom: 0rem;
         padding-left: 5%;
         padding-right: 5%;
+    }
+    
+    /* Ensure scrollbar is hidden on specific elements */
+    .st-emotion-cache-1r6ftj {
+        display: none;
     }
     </style>
 """, unsafe_allow_html=True)
