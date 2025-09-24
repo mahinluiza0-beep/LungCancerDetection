@@ -18,7 +18,8 @@ st.markdown("""
     }
     
     .main {
-        background-color: #f0f2f6;
+        /* Gradient Background for the main content area */
+        background-image: linear-gradient(to right top, #d1e7e7, #e6f3ff, #e0f2f7, #cceeff); /* Light blue/teal gradient */
         color: #333333;
         padding: 20px 50px;
     }
@@ -40,7 +41,7 @@ st.markdown("""
     }
     
     .custom-container {
-        background-color: white;
+        background-color: white; /* Keep containers white for contrast */
         border-radius: 15px;
         padding: 25px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -48,30 +49,43 @@ st.markdown("""
         margin-bottom: 20px;
     }
     
-    .st-emotion-cache-1r6ftj {
-        background-color: #e6f3ff;
-        color: #004d99;
-        border-radius: 10px;
+    /* Info and Warning boxes can also get a slightly updated look */
+    .st-emotion-cache-1r6ftj { /* This is for st.info */
+        background-color: #e0f7fa; /* Lighter blue */
+        color: #006064; /* Darker teal */
+        border-left: 5px solid #00BCD4; /* Accent border */
+        border-radius: 8px;
         padding: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     
-    .st-emotion-cache-q82v5q {
-        background-color: #fcf8e3;
-        color: #8a6d3b;
-        border-radius: 10px;
+    .st-emotion-cache-q82v5q { /* This is for st.warning */
+        background-color: #fff8e1; /* Lighter yellow */
+        color: #e65100; /* Darker orange */
+        border-left: 5px solid #FFC107; /* Accent border */
+        border-radius: 8px;
         padding: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     
     h1 {
         color: #003366;
         text-align: center;
         font-weight: 700;
-        text-shadow: 1px 1px 2px #cccccc;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.15); /* More prominent text shadow */
     }
 
-    /* Hide the default sidebar and its scroller */
-    .st-emotion-cache-1r6ftj {
+    /* Hide the default sidebar and its scroller (still applies even if sidebar elements are moved) */
+    .st-emotion-cache-1r6ftj { /* This targets the actual Streamlit sidebar container */
         display: none;
+    }
+
+    /* Adjust the main content block padding if needed after removing sidebar */
+    .block-container {
+        padding-top: 1rem;
+        padding-bottom: 0rem;
+        padding-left: 5%;
+        padding-right: 5%;
     }
     </style>
 """, unsafe_allow_html=True)
