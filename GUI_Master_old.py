@@ -50,7 +50,8 @@ def test_model_proc(img: Image.Image):
 # Show and process image
 if uploaded_file:
     image = Image.open(uploaded_file)
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+    st.image(image, caption="Uploaded Image", use_container_width=True)
+
 
     if st.button("Run Detection"):
         with st.spinner("Analyzing..."):
@@ -103,3 +104,4 @@ if uploaded_file and detection_result:
         pdf_file = generate_report(user, detection_result, stored_image)
         with open(pdf_file, "rb") as f:
             st.download_button("Download Report", data=f, file_name=pdf_file, mime="application/pdf")
+
